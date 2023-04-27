@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
+  var dbURL = dotenv.env['DB_URL'];
+  var anonKey = dotenv.env['ANON_KEY'];
+
+  await Supabase.initialize(
+    url: dbURL!,
+    anonKey: anonKey!,
+  );
+
   runApp(const MyApp());
 }
 
@@ -32,18 +43,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
+  void _incrementCounter() async {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
-
-  void _sendTestData() {}
 
   @override
   Widget build(BuildContext context) {
