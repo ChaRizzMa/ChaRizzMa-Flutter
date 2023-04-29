@@ -1,6 +1,9 @@
+import 'package:charizzma/Pages/Home/home.dart';
 import 'package:charizzma/Pages/Login/login.dart';
+import 'package:charizzma/Pages/Signup/create_account.dart';
 import 'package:charizzma/common/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -23,11 +26,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    GoRouter router = GoRouter(routes: [
+      GoRoute(path: "/home", builder: (context, state) => const Home()),
+      GoRoute(path: "/login", builder: (context, state) => Login()),
+    ], initialLocation: false ? '/home' : '/login'); // TODO Check login
+
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: mainTheme,
       darkTheme: darkTheme,
-      home: Login(),
+      routerConfig: router,
     );
   }
 }

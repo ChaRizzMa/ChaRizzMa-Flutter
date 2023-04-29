@@ -1,7 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'colorSchemes.g.dart';
 
-// TODO: Make the theme for this app
-ThemeData mainTheme = ThemeData(colorScheme: lightColorScheme);
+ThemeData mainTheme = ThemeData(
+  textTheme: TextTheme(
+    displayLarge: GoogleFonts.notoSans(
+        fontSize: 96,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -1.5,
+        color: lightColorScheme.onSurface),
+    displayMedium: GoogleFonts.notoSans(
+        fontSize: 60,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.5,
+        color: lightColorScheme.onSurface),
+    displaySmall: GoogleFonts.notoSans(
+        fontSize: 48,
+        fontWeight: FontWeight.w600,
+        color: lightColorScheme.onSurface),
+    headlineMedium: GoogleFonts.notoSans(
+        fontSize: 34, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+    headlineSmall:
+        GoogleFonts.notoSans(fontSize: 24, fontWeight: FontWeight.w400),
+    titleLarge: GoogleFonts.notoSans(
+        fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.15),
+    titleMedium: GoogleFonts.notoSans(
+        fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.15),
+    titleSmall: GoogleFonts.notoSans(
+        fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+    bodyLarge: GoogleFonts.notoSans(
+        fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+    bodyMedium: GoogleFonts.notoSans(
+        fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+    bodySmall: GoogleFonts.notoSans(
+        fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
+    labelLarge: GoogleFonts.notoSans(
+        fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 1.25),
+    labelMedium: GoogleFonts.notoSans(
+        fontSize: 12, fontWeight: FontWeight.w500, letterSpacing: 1.25),
+    labelSmall: GoogleFonts.notoSans(
+        fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+  ),
+  colorScheme: lightColorScheme,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+          side: MaterialStateBorderSide.resolveWith((states) {
+            return const BorderSide(width: 1.0, color: Colors.black);
+          }),
+          shadowColor: MaterialStateProperty.all(Colors.transparent))),
+);
 
 ThemeData darkTheme = ThemeData(colorScheme: darkColorScheme);
