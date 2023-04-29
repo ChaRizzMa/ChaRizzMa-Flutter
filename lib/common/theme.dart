@@ -3,6 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'colorSchemes.g.dart';
 
 ThemeData mainTheme = ThemeData(
+  inputDecorationTheme: const InputDecorationTheme(
+    border: OutlineInputBorder(),
+    focusedBorder: OutlineInputBorder(),
+    contentPadding:
+        EdgeInsets.only(top: 4.0, bottom: 4.0, left: 16.0, right: 16.0),
+  ),
   textTheme: TextTheme(
     displayLarge: GoogleFonts.notoSans(
         fontSize: 96,

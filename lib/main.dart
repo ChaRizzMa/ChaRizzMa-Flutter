@@ -17,25 +17,49 @@ Future<void> main() async {
     anonKey: anonKey!,
   );
 
-  runApp(const MyApp());
+  runApp(MyApp());
+}
+
+// The DismissKeybaord widget (it's reusable)
+class DismissKeyboard extends StatelessWidget {
+  final Widget child;
+  const DismissKeyboard({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
+      },
+      child: child,
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  GoRouter router = GoRouter(routes: [
+    GoRoute(path: "/home", builder: (context, state) => const Home()),
+    GoRoute(path: "/login", builder: (context, state) => Login()),
+  ], initialLocation: false ? '/home' : '/login');
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    GoRouter router = GoRouter(routes: [
-      GoRoute(path: "/home", builder: (context, state) => const Home()),
-      GoRoute(path: "/login", builder: (context, state) => Login()),
-    ], initialLocation: false ? '/home' : '/login'); // TODO Check login
+    // TODO Check login
 
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: mainTheme,
-      darkTheme: darkTheme,
-      routerConfig: router,
+    return DismissKeyboard(
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        theme: mainTheme,
+        darkTheme: darkTheme,
+        routerConfig: router,
+      ),
     );
   }
 }
