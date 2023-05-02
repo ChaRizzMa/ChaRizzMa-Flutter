@@ -1,3 +1,4 @@
+import 'package:charizzma/Pages/Signup/create_account_page2.dart';
 import 'package:flutter/material.dart';
 
 class CreateAcount extends StatefulWidget {
@@ -21,10 +22,10 @@ class _CreateAcountState extends State<CreateAcount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 64.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 64),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -181,16 +182,68 @@ class _CreateAcountState extends State<CreateAcount> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 32),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    // pass data into next page of application
-                                  }
-                                },
-                                child: const Text("Continue")),
+                          padding: const EdgeInsets.only(top: 32, bottom: 64),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: SizedBox(
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                        Color>(
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .surfaceVariant),
+                                            foregroundColor:
+                                                MaterialStateProperty.all<
+                                                        Color>(
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .onSurface)),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("Back")),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: SizedBox(
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            // pass data into next page of application
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CreateAccountPreferences(
+                                                          firstName: _fn.text,
+                                                          lastname: _ln.text,
+                                                          email: _email.text,
+                                                          phoneNumber:
+                                                              _phone.text,
+                                                          username:
+                                                              _username.text,
+                                                          password:
+                                                              _password.text,
+                                                        )));
+                                          }
+                                        },
+                                        child: const Text("Next")),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         )
                       ],

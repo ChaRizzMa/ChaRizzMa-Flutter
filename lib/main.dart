@@ -17,6 +17,9 @@ Future<void> main() async {
     anonKey: anonKey!,
   );
 
+  print("Current User");
+  print(Supabase.instance.client.auth.currentUser?.email);
+
   runApp(MyApp());
 }
 
@@ -43,10 +46,14 @@ class DismissKeyboard extends StatelessWidget {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  GoRouter router = GoRouter(routes: [
-    GoRoute(path: "/home", builder: (context, state) => const Home()),
-    GoRoute(path: "/login", builder: (context, state) => Login()),
-  ], initialLocation: false ? '/home' : '/login');
+  GoRouter router = GoRouter(
+      routes: [
+        GoRoute(path: "/home", builder: (context, state) => const Home()),
+        GoRoute(path: "/login", builder: (context, state) => Login()),
+      ],
+      initialLocation: Supabase.instance.client.auth.currentUser == null
+          ? '/login'
+          : '/home');
 
   // This widget is the root of your application.
   @override
