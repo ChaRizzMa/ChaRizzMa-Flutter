@@ -2,6 +2,8 @@ import 'dart:ffi';
 
 import 'package:charizzma/Pages/Signup/create_account.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreateAccountPreferences extends StatefulWidget {
   final String firstName, lastname, email, phoneNumber, username, password;
@@ -40,7 +42,10 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
   bool _currentSelfRizzIsSelected = false;
   bool _currentSelfAttractionIsSelected = false;
 
-  void _signUpUser() {}
+  void _signUpUser() async {
+    // await Supabase.instance.client.auth.signUp(email: widget.email, password: widget.password);
+    context.go('/home');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +251,7 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
                               padding: const EdgeInsets.only(left: 8),
                               child: SizedBox(
                                 child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: _signUpUser,
                                     child: const Text("Create Account")),
                               ),
                             ),

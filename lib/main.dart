@@ -1,4 +1,5 @@
-import 'package:charizzma/Pages/Home/home.dart';
+import 'package:charizzma/Pages/Home/bottom_navbar.dart';
+import 'package:charizzma/Pages/Home/listview.dart';
 import 'package:charizzma/Pages/Login/login.dart';
 import 'package:charizzma/Pages/Signup/create_account.dart';
 import 'package:charizzma/common/theme.dart';
@@ -48,12 +49,52 @@ class MyApp extends StatelessWidget {
 
   GoRouter router = GoRouter(
       routes: [
-        GoRoute(path: "/home", builder: (context, state) => const Home()),
+        ShellRoute(
+          builder: (context, state, child) {
+            return ScaffoldWithBottomNavigation(
+              child: child,
+            );
+          },
+          routes: [
+            GoRoute(
+                path: "/home",
+                builder: (context, state) {
+                  return HomeListView();
+                },
+                routes: [
+                  GoRoute(
+                      path: "detail",
+                      builder: (context, state) {
+                        return Container();
+                      })
+                ]),
+            GoRoute(
+              path: "/addrizz",
+              builder: (context, state) {
+                return Scaffold(
+                  body: Center(
+                    child: Text("AddRIZZ"),
+                  ),
+                );
+              },
+            ),
+            GoRoute(
+              path: "/myrizz",
+              builder: (context, state) {
+                return Scaffold(
+                  body: Center(
+                    child: Text("My Rizz"),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
         GoRoute(path: "/login", builder: (context, state) => Login()),
       ],
-      initialLocation: Supabase.instance.client.auth.currentUser == null
+      initialLocation: Supabase.instance.client.auth.currentUser != null
           ? '/login'
-          : '/home');
+          : '/home'); // TODO: change back to == null when finished
 
   // This widget is the root of your application.
   @override
