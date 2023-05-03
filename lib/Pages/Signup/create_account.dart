@@ -222,6 +222,8 @@ class _CreateAcountState extends State<CreateAcount> {
                                           if (_formKey.currentState!
                                               .validate()) {
                                             // pass data into next page of application
+                                            print(
+                                                "$_fn, $_ln,$_email,$_phone,$_username,$_password,");
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

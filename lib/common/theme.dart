@@ -54,6 +54,27 @@ ThemeData mainTheme = ThemeData(
               return const BorderSide(width: 1.0, color: Colors.black);
             }),
             shadowColor: MaterialStateProperty.all(Colors.transparent))),
-    appBarTheme: AppBarTheme(shadowColor: Colors.transparent));
+    appBarTheme: AppBarTheme(
+        shadowColor: Colors.transparent,
+        backgroundColor: lightColorScheme.background,
+        titleTextStyle: TextStyle(
+            color: lightColorScheme.onSurface,
+            fontSize: 24,
+            fontWeight: FontWeight.bold),
+        iconTheme: IconThemeData(color: lightColorScheme.onSurface),
+        actionsIconTheme: IconThemeData(color: lightColorScheme.onSurface),
+        shape: Border(
+            bottom: BorderSide(color: lightColorScheme.onSurface, width: 1))),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: lightColorScheme.background,
+    ),
+    tabBarTheme: TabBarTheme(
+        unselectedLabelColor: lightColorScheme.onSurface,
+        labelColor: lightColorScheme.primary,
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+        indicator: const BoxDecoration()));
 
 ThemeData darkTheme = ThemeData(colorScheme: darkColorScheme);
+
+AppBarTheme appBarThemeDark = const AppBarTheme();

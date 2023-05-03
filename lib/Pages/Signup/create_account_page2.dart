@@ -1,7 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'dart:ffi';
 
 import 'package:charizzma/Pages/Signup/create_account.dart';
+import 'package:charizzma/models/rizz_math.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreateAccountPreferences extends StatefulWidget {
   final String firstName, lastname, email, phoneNumber, username, password;
@@ -14,7 +19,8 @@ class CreateAccountPreferences extends StatefulWidget {
       required this.phoneNumber,
       required this.username,
       required this.password}) {
-    // debug print("${this.firstName}, ${this.lastname}");
+    print(
+        "${this.firstName}, ${this.lastname}, ${this.email}, ${this.phoneNumber}, ${this.password}");
   }
 
   @override
@@ -26,11 +32,11 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
   List<String> pronounList = <String>["He/Him", "She/Hers", "They/Them"];
   // edge case, if they/them orientation list has to change
 
-  List<String> orientation = <String>[
-    "Heterosexual",
-    "Homosexual",
-    "Bi-Sexual"
-  ];
+  String _userPronouns = "";
+
+  List<String> attractionPreference = <String>["Men", "Women", "Other"];
+
+  String _userAttractionPreference = "";
 
   double _currentSelfRizz = 0.5;
   double _currentSelfAttraction = 0.5;
@@ -39,8 +45,6 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
 
   bool _currentSelfRizzIsSelected = false;
   bool _currentSelfAttractionIsSelected = false;
-
-  void _signUpUser() {}
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +87,18 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
                             );
                           }).toList(),
                           onChanged: (value) {
-                            setState(() {});
+                            setState(() {
+                              _userPronouns = value!;
+                              print(_userPronouns);
+                            });
+
+                            if (value == "They/Them") {}
                           }),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: DropdownButtonFormField(
-                          items: orientation
+                          items: attractionPreference
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -97,7 +106,10 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
                             );
                           }).toList(),
                           onChanged: (value) {
-                            setState(() {});
+                            setState(() {
+                              _userAttractionPreference = value!;
+                              print(_userAttractionPreference);
+                            });
                           }),
                     ),
                     Padding(
@@ -246,7 +258,37 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
                               padding: const EdgeInsets.only(left: 8),
                               child: SizedBox(
                                 child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () => showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return PlatformAlertDialog(
+                                            title:
+                                                const Text('AlertDialog Title'),
+                                            content: const Text(
+                                                'AlertDialog description'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(
+                                                      context, 'Cancel');
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  try {
+                                                    _signUpUser();
+                                                  } catch (e) {
+                                                    // TODO: something went wrong
+                                                  }
+                                                  Navigator.popUntil(context,
+                                                      (route) => route.isFirst);
+                                                },
+                                                child: const Text('Login'),
+                                              ),
+                                            ],
+                                          );
+                                        }),
                                     child: const Text("Create Account")),
                               ),
                             ),
@@ -260,5 +302,19 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
         ),
       ),
     );
+  }
+
+  void _signUpUser() async {
+    var userInstance = await Supabase.instance.client.auth
+        .signUp(email: widget.email, password: widget.password, data: {
+      "username": widget.username,
+      "user_pronouns": _userPronouns,
+      "attraction_preference": _userAttractionPreference,
+      "initial_self_rizz": _currentSelfRizzDisplay, // value 1-10
+      "initial_self_attraction": _currentSelfAttractionDisplay, // value 1-10
+      "initial_overall_rizz": RizzCalculations.calculateInitialRizz(
+          _currentSelfRizzDisplay.toDouble(),
+          _currentSelfAttractionDisplay.toDouble())
+    });
   }
 }

@@ -46,26 +46,22 @@ class DismissKeyboard extends StatelessWidget {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  GoRouter router = GoRouter(
+  final GoRouter _router = GoRouter(
       routes: [
         GoRoute(path: "/home", builder: (context, state) => const Home()),
         GoRoute(path: "/login", builder: (context, state) => Login()),
       ],
       initialLocation: Supabase.instance.client.auth.currentUser == null
           ? '/login'
-          : '/home');
-
-  // This widget is the root of your application.
+          : '/home'); // TODO  make make == null after finishing changes
   @override
   Widget build(BuildContext context) {
-    // TODO Check login
-
     return DismissKeyboard(
       child: MaterialApp.router(
         title: 'Flutter Demo',
         theme: mainTheme,
         darkTheme: darkTheme,
-        routerConfig: router,
+        routerConfig: _router,
       ),
     );
   }
