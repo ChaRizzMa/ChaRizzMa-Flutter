@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:charizzma/Pages/Signup/create_account.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:text_divider/text_divider.dart';
 
 // TODO: Add state functions, edit the styling for it to look good in dark mode.
@@ -15,6 +18,9 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var _username = TextEditingController();
   var _password = TextEditingController();
+
+  String? _usernameErrorText = null;
+  String? _passwordErrorText = null;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +66,10 @@ class _LoginState extends State<Login> {
                                 return null;
                               }
                             },
-                            decoration: const InputDecoration(
-                                labelText: "Username",
-                                prefixIcon: Icon(Icons.person)),
+                            decoration: InputDecoration(
+                                labelText: "Email Address",
+                                errorText: _usernameErrorText,
+                                prefixIcon: Icon(Icons.email)),
                             enableSuggestions: false,
                             autocorrect: false,
                           ),
@@ -78,8 +85,9 @@ class _LoginState extends State<Login> {
                                 return null;
                               }
                             },
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                                 labelText: "Password",
+                                errorText: _passwordErrorText,
                                 prefixIcon: Icon(Icons.lock)),
                             enableSuggestions: false,
                             autocorrect: false,
@@ -93,8 +101,16 @@ class _LoginState extends State<Login> {
                                 if (_formKey.currentState!.validate()) {
                                   print(_username.text);
                                   print(_password.text);
-                                  _username.clear();
-                                  _password.clear();
+
+                                  var errorMessage = _signUp();
+                                  print("ERROR: $errorMessage");
+                                  if (errorMessage != null) {
+                                    setState(() {
+                                      // TODO: on login fail, display an error text
+                                      _usernameErrorText = errorMessage;
+                                      _passwordErrorText = errorMessage;
+                                    });
+                                  }
                                 }
                               },
                               child: const Text("Login")),
@@ -107,7 +123,7 @@ class _LoginState extends State<Login> {
                     width: double.infinity,
                     child: TextButton(
                       onPressed: () {},
-                      child: const Text("Forgot your password?"),
+                      child: const Text("Forgot your credentials?"),
                     ),
                   ),
                 ),
@@ -138,5 +154,17 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  String? _signUp() {
+    var user = Supabase.instance.client.auth
+        .signInWithPassword(email: _username.text, password: _password.text)
+        .then((value) {
+      context.go("/home");
+      return null;
+    }).catchError((e) {
+      print(e);
+      return e.toString();
+    });
   }
 }

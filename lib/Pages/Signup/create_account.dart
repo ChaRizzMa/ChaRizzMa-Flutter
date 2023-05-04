@@ -149,12 +149,15 @@ class _CreateAcountState extends State<CreateAcount> {
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: TextFormField(
                             controller: _password,
+                            obscureText: true,
                             decoration: const InputDecoration(
                               labelText: "Password",
                             ),
                             validator: (String? str) {
                               if (str == null || str.isEmpty) {
                                 return "Field must not be empty";
+                              } else if (str != _confirmPassword.text) {
+                                return "Passwords do not match.";
                               } else {
                                 return null;
                               }
@@ -167,12 +170,15 @@ class _CreateAcountState extends State<CreateAcount> {
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: TextFormField(
                             controller: _confirmPassword,
+                            obscureText: true,
                             decoration: const InputDecoration(
                               labelText: "Confirm Password",
                             ),
                             validator: (String? str) {
                               if (str == null || str.isEmpty) {
-                                return "Field must not be empty";
+                                return "Field must not be empty.";
+                              } else if (str != _password.text) {
+                                return "Passwords do not match.";
                               } else {
                                 return null;
                               }

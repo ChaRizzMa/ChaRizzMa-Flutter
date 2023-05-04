@@ -263,17 +263,10 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
                                         builder: (context) {
                                           return PlatformAlertDialog(
                                             title:
-                                                const Text('AlertDialog Title'),
-                                            content: const Text(
-                                                'AlertDialog description'),
+                                                const Text('Verify your Email'),
+                                            content: Text(
+                                                'We have sent you a confirmation email to ${widget.email}.'),
                                             actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(
-                                                      context, 'Cancel');
-                                                },
-                                                child: const Text('Cancel'),
-                                              ),
                                               TextButton(
                                                 onPressed: () {
                                                   try {
@@ -284,7 +277,8 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
                                                   Navigator.popUntil(context,
                                                       (route) => route.isFirst);
                                                 },
-                                                child: const Text('Login'),
+                                                child:
+                                                    const Text('Go to Login'),
                                               ),
                                             ],
                                           );
@@ -313,6 +307,9 @@ class _CreateAccountPreferencesState extends State<CreateAccountPreferences> {
       "initial_self_rizz": _currentSelfRizzDisplay, // value 1-10
       "initial_self_attraction": _currentSelfAttractionDisplay, // value 1-10
       "initial_overall_rizz": RizzCalculations.calculateInitialRizz(
+          _currentSelfRizzDisplay.toDouble(),
+          _currentSelfAttractionDisplay.toDouble()),
+      "current_rizz": RizzCalculations.calculateInitialRizz(
           _currentSelfRizzDisplay.toDouble(),
           _currentSelfAttractionDisplay.toDouble())
     });
